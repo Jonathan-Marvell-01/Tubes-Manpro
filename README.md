@@ -8,8 +8,8 @@ Sistem informasi terpusat berbasis web untuk Kapi Event Organizer. Sistem ini be
 * **Anggota Tim:** Muhammad Ariq Salim, Bryan Heinz, Cloud Althea
 
 ## Tech Stack
-* **Frontend:** Embedeed.js
-* **Backend:** Embedeed.js
+* **Frontend:** Embedded.js
+* **Backend:** Embedded.js
 * **Database:** MySQL
 
 ## Petunjuk Pengerjaan (SOP)
