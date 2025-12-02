@@ -1,0 +1,73 @@
+<%- include("navbarowner.ejs") %>
+
+ <% if (status) { %>
+  <script>
+    alert("<%= status %>");
+  </script>
+<% } %>
+
+    <div class="layoutBody">
+    <div class="container">
+      <h1><%= heading %></h1>
+
+      <div class="top-bar">
+        <form action="/owner/mngvendor" method="GET">
+        <div class="search">
+          <label>Find</label>
+          <div class="search-box">
+            <input type="text" name="search" placeholder="Search Vendor Name ..." />
+            <span class="search-icon">&#128269;</span>
+          </div>
+        </div>
+        </form>
+
+        <div class="action-buttons">
+          <a href="/owner/mngvendor/mngtype"><button class="add-btn">Manage Type</button></a>
+          <a href="/owner/mngvendor/add-vendor"><button class="add-btn">Add +</button></a>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <% columns.forEach(col => { %>
+              <th><%= col %></th>
+              <% }) %>
+            </tr>
+          </thead>
+          <tbody>
+            <% vendors.forEach(vendor => { %>
+            <tr>
+              <td><a href="/owner/mngvendor/edit-vendor/<%=vendor.id_vendor%>"><button class="edit-icon">&#9998;</button></td></a>
+              <td><%= vendor.nama_vendor %></td>
+              <td><%= vendor.nama_pemilik%></td>
+              <td><%= vendor.alamat%></td>
+              <td><%= "Rp " + vendor.harga_min.toLocaleString('id-ID') + " - Rp " + vendor.harga_max.toLocaleString('id-ID')%></td>
+              <td><%= vendor.nama_kategori%></td>
+              <td><%=vendor.kontak%></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+          <% if (currentPage > 1) { %>
+            <a href="?page=<%= currentPage - 1 %>">Previous</a>
+          <% } %>
+
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+          <% } %>
+
+          <% if (currentPage < totalPages) { %>
+            <a href="?page=<%= currentPage + 1 %>">Next</a>
+          <% } %>
+        </div>
+    </div>
+
+    </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+ <%- include("navbarowner.ejs") %>
+
+ <% if (status) { %>
+  <script>
+    alert("<%= status %>");
+  </script>
+<% } %>
+
+<div class="page-container">
+    <!-- Kiri: Judul -->
+    <div class="left-content">
+      <h1>Vendor<br>Type List</h1>
+    </div>
+
+    <!-- Kanan: Form + Tabel -->
+    <div class="right-content">
+      <!-- Search + Add -->
+      <div class="top-bar2">
+        <form action="/owner/mngvendor/mngtype" method="GET">
+        <div class="search-bar">
+          <label>Find</label>
+          <div class="search-box">
+            <input type="text" name="search" placeholder="Search Vendor Type.." />
+            <span class="search-icon">🔍</span>
+          </div>
+        </div>
+        </form>
+
+        <form action="/owner/mngvendor/mngtype/add-type" method="POST">
+          <div class="add-box">
+            <input type="text" name="typeName" placeholder="type" required />
+            <button type="submit" class="add-button">Add Type +</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Tabel -->
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Delete</th>
+            <th>Edit</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody id="typeTableBody">
+          <% vendorTypes.forEach(type => { %>
+            <tr data-id="<%= type.id_kategori %>">
+              <td>
+                <form id="deleteForm" action="/owner/mngvendor/mngtype/delete/<%=type.id_kategori%>" method="POST" onsubmit="return confirm('Are you sure you want to delete this vendor?')" style="display: inline;">
+                  <button type="submit" class="icon-btn delete-btn">🗑️</button>
+                </form>
+              </td>
+              <td>
+                <button class="icon-btn edit-btn" onclick="enableEdit(this)">✏️</button>
+                <button class="icon-btn save-btn" style="display:none;" onclick="handleSave(this)">💾</button>
+              </td>
+              <td class="type-cell">
+                <span class="type-text"><%= type.nama_kategori %></span>
+                <input type="text" class="type-input" style="display:none;" value="<%= type.nama_kategori %>" />
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+<div class="pagination">
+  <% if (currentPage > 1) { %>
+    <a href="?page=<%= currentPage - 1 %>">Previous</a>
+  <% } %>
+
+  <% for (let i = 1; i <= totalPages; i++) { %>
+    <a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+  <% } %>
+
+  <% if (currentPage < totalPages) { %>
+    <a href="?page=<%= currentPage + 1 %>">Next</a>
+  <% } %>
+</div>
+
+    </div>
+  </div>
+
+  <script>
+    function enableEdit(button) {
+      const row = button.closest("tr");
+      row.querySelector(".type-text").style.display = "none";
+      row.querySelector(".type-input").style.display = "inline-block";
+      row.querySelector(".edit-btn").style.display = "none";
+      row.querySelector(".save-btn").style.display = "inline-block";
+    }
+
+    function handleSave(button) {
+      const row = button.closest("tr");
+      const id = row.dataset.id;
+      const newValue = row.querySelector(".type-input").value;
+
+
+      fetch(`/owner/mngvendor/mngtype/update/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newType: newValue })
+      }).then(res => {
+        if (res.ok) {
+          row.querySelector(".type-text").textContent = newValue;
+          row.querySelector(".type-text").style.display = "inline-block";
+          row.querySelector(".type-input").style.display = "none";
+          row.querySelector(".edit-btn").style.display = "inline-block";
+          row.querySelector(".save-btn").style.display = "none";
+        } else {
+          alert("Failed to update");
+        }
+      });
+    }
+  </script>
+</body>
+</html>

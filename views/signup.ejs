@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="/styles/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="login-box">
+        <h4>Welcome to Kapi Event Organizer System</h4>
+        <br />
+        <h1>Sign Up</h1>
+
+        <form action="/signup" method="POST">
+          <input type="text" name="username" placeholder="Username" required />
+          <div class="password-wrapper">
+            <input type="password" name="password" placeholder="Password" required />
+            <span class="toggle-password">&#128065;</span>
+          </div>
+
+          <button type="submit" class="login-btn">Sign Up</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

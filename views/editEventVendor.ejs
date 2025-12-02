@@ -1,0 +1,88 @@
+<%- include("navbarass.ejs") %>
+<div class="select-vendor-body">
+  <div class="select-vendor-wrapper">
+    <h1 class="select-vendor-title">Edit<br>Vendor</h1>
+
+    <!-- FORM: Edit -->
+    <form
+      id="editForm"
+      action="/assistant/mngevent/detail/edit-vendor/<%=idEvent%>/<%=idVendor%>"
+      method="POST"
+      style="display: inline;"
+    >
+      <!-- Select row -->
+      <div class="form-row">
+        <label for="priceStatus">Price Status</label>
+        <select name="priceStatus" id="priceStatus" required>
+          <% if(isFix) { %>
+            <option value="Fix" selected>Fix</option>
+            <option value="Estimation">Estimation</option>
+          <% } else { %>
+            <option value="Fix">Fix</option>
+            <option value="Estimation" selected>Estimation</option>
+          <% } %>
+        </select>
+      </div>
+
+      <!-- Price input row -->
+      <div class="form-row">
+        <label for="price">Price</label>
+        <% if(isFix) { %>
+          <input
+            type="text"
+            id="price"
+            name="price"
+            placeholder="Enter price"
+            value="<%=hargaDealing%>"
+          />
+        <% } else { %>
+          <input
+            type="text"
+            id="price"
+            name="price"
+            placeholder="Enter price"
+            disabled
+          />
+        <% } %>
+      </div>
+
+      <!-- Button group -->
+      <div style="display: flex; gap: 16px; margin-top: 20px; justify-content: center;">
+        <button type="submit" class="add-button" style="margin-top: 0px;">Save</button>
+    </form>
+
+    <!-- FORM: Delete -->
+    <form
+      id="deleteForm"
+      action="/assistant/mngevent/detail/delete-vendor/<%=idEvent%>/<%=idVendor%>"
+      method="POST"
+      onsubmit="return confirm('Are you sure you want to delete this vendor?')"
+      style="display: inline;"
+    >
+        <button type="submit" class="delete-button">Delete Vendor</button>
+    </form>
+      </div>
+  </div>
+</div>
+
+<script>
+  const priceSelect = document.getElementById('priceStatus');
+  const priceInput = document.getElementById('price');
+
+  function updateInputState() {
+    if (priceSelect.value === 'Fix') {
+      priceInput.disabled = false;
+      priceInput.required = true;
+    } else {
+      priceInput.disabled = true;
+      priceInput.required = false;
+      priceInput.value = '';
+    }
+  }
+
+  updateInputState();
+  priceSelect.addEventListener('change', updateInputState);
+</script>
+
+
+</body></html>

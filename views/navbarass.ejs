@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <link rel="stylesheet" href="/styles/dashboard.css" />
+    <link rel="stylesheet" href="/styles/table.css" />
+    <link rel="stylesheet" href="/styles/form.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="/assistant/dashboard" class="<%= active == 1 ? 'active' : '' %>">Home</a></li>
+        <li><a href="/assistant/mngclient" class="<%= active == 2 ? 'active' : '' %>">Manage Client</a></li>
+        <li><a href="/assistant/mngevent" class="<%= active == 3 ? 'active' : '' %>">Manage Event</a></li>
+      </ul>
+      <a href="/logout"><button class="logout-btn">Log Out</button></a>
+    </nav>
+  

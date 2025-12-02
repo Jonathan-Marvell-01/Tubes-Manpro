@@ -1,0 +1,51 @@
+  <%- include("navbarass.ejs") %>
+
+<div class="select-vendor-body">
+ <div class="select-vendor-wrapper">
+    <h1 class="select-vendor-title">Select<br>Vendor</h1>
+
+    <form action="/assistant/mngevent/detail/add-vendor/<%=idEvent%>" method="POST">
+      <input
+        list="vendor-list"
+        id="vendor-search"
+        class="vendor-input"
+        placeholder="Search for existing vendor"
+        autocomplete="off"
+      />
+
+      <!-- Datalist options -->
+      <datalist id="vendor-list">
+        <% vendors.forEach(v => { %>
+          <option data-id="<%= v.id_vendor %>" value="<%= v.nama_vendor %>"></option>
+        <% }) %>
+      </datalist>
+
+      <!-- Hidden field -->
+      <input type="hidden" name="vendorId" id="vendor-id" />
+
+      <br />
+      <button type="submit" class="add-button">Add</button>
+    </form>
+  </div>
+</div>
+
+  <script>
+    const visibleInput = document.getElementById('vendor-search');
+    const hiddenInput = document.getElementById('vendor-id');
+    const datalist = document.getElementById('vendor-list');
+
+    visibleInput.addEventListener('input', () => {
+      const options = datalist.options;
+      const value = visibleInput.value;
+      hiddenInput.value = '';
+
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].value === value) {
+          hiddenInput.value = options[i].dataset.id;
+          break;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

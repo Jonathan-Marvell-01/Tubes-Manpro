@@ -1,0 +1,74 @@
+    <%- include("navbarass.ejs") %>
+
+    <% if (status) { %>
+  <script>
+    alert("<%= status %>");
+  </script>
+<% } %>
+
+    <% let estimationStatus = 0; %>
+
+    <div class="layoutBody">
+    <div class="container">
+      <h1 style="text-align:center; margin-bottom: 30px;"><%= heading %></h1>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <% columns.forEach(col => { %>
+              <th><%= col %></th>
+              <% }) %>
+              <th> <div class="action-buttons" style="text-align: right;"> <a href="/assistant/mngevent/detail/add-vendor/<%=idEvent%>"><button class="add-btn">Add +</button></a> </div></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% vendors.forEach(vendor => { %>
+            <tr>
+              <td><%= vendor.nama_vendor%></td>
+              <td><%= vendor.nama_kategori %></td>
+              <% if(vendor.harga_dealing != null) { %>
+                <td><%= "Rp "+vendor.harga_dealing.toLocaleString('id-ID') %></td>
+                <td> Fix </td>
+              <% } else { %>
+                <td><%="Rp " + vendor.harga_min.toLocaleString('id-ID') + " - Rp " + vendor.harga_max.toLocaleString('id-ID')%></td>
+                <td> Estimation </td>
+                <% estimationStatus++; %>
+              <% } %>
+              <td style="color: #8c5a28; font-weight: bold; text-align: right; padding-right: 35px;"><a href="/assistant/mngevent/detail/edit-vendor/<%=idEvent%>/<%=vendor.id_vendor%>" style="text-decoration: none; color: inherit;"> Edit </td></a>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+          <% if (currentPage > 1) { %>
+            <a href="?page=<%= currentPage - 1 %>">Previous</a>
+          <% } %>
+
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+          <% } %>
+
+          <% if (currentPage < totalPages) { %>
+            <a href="?page=<%= currentPage + 1 %>">Next</a>
+          <% } %>
+        </div>
+    
+      <div style="margin-top: 80px; text-align: right; padding-right: 40px;">
+        <h2 style="color: #8c5a28; display: inline-block; margin-right: 10px;">Total Price (Fixed)</h2>
+        <span style="font-weight: bold; color: #8c5a28;">IDR</span>
+        <span style="border-bottom: 2px solid #8c5a28; padding: 0 40px;"><%= "Rp "+totalFix.toLocaleString('id-ID')%></span>
+        <% if(estimationStatus == 0) { %>
+            <div style="font-size: 13px; color: #8c5a28; margin-top: 4px;">*all price are fixed</div>
+        <% } else { %>
+            <div style="font-size: 13px; color: #8c5a28; margin-top: 4px;">*still has estimation price</div>
+        <% } %>
+      </div>
+
+      
+    </div>
+    </div>
+  </body>
+</html>

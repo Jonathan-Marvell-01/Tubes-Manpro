@@ -1,0 +1,56 @@
+    <%- include("navbarowner.ejs") %>
+
+    <div class="layoutBody">
+    <div class="container">
+      <h1 style="text-align:center; margin-bottom: 30px;"><%= heading %></h1>
+
+      <div class="table-wrapper">
+        <table >
+          <thead>
+            <tr>
+              <% columns.forEach(col => { %>
+              <th><%= col %></th>
+              <% }) %>
+            </tr>
+          </thead>
+          <tbody>
+            <% vendors.forEach(vendor => { %>
+            <tr>
+              <td><%= vendor.nama + "'s " + vendor.nama_jenis%></td>
+              <td><%= vendor.nama_kategori %></td>
+              <% if(vendor.harga_dealing != null) { %>
+                <td><%= "Rp "+vendor.harga_dealing.toLocaleString('id-ID') %></td>
+              <% } else { %>
+                <td>-</td>
+              <% } %>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+          <% if (currentPage > 1) { %>
+            <a href="?page=<%= currentPage - 1 %>">Previous</a>
+          <% } %>
+
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+          <% } %>
+
+          <% if (currentPage < totalPages) { %>
+            <a href="?page=<%= currentPage + 1 %>">Next</a>
+          <% } %>
+        </div>
+    
+      <div style="margin-top: 80px; text-align: right; padding-right: 40px;">
+        <h2 style="color: #8c5a28; display: inline-block; margin-right: 10px;">Total Dealing Price</h2>
+        <span style="font-weight: bold; color: #8c5a28;">IDR</span>
+        <span style="border-bottom: 2px solid #8c5a28; padding: 0 40px;"><%= "Rp "+ sum.toLocaleString('id-ID')%></span>
+      </div>
+
+      
+    </div>
+    </div>
+  </body>
+</html>

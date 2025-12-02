@@ -1,0 +1,48 @@
+ <%- include("navbarowner.ejs") %>
+
+ <div class="layoutAddBody">
+ <div class="form-container">
+    <div class="form-left">
+      <h1><%= heading %></h1>
+    </div>
+    <div class="form-right">
+      <form id="saveForm" action="<%= formAction %>" method="POST">
+        <% fields.forEach(field => { %>
+            <div class="form-group">
+                <label><%= field.label %></label>
+
+            <% if (field.type === 'select') { %>
+                <select name="<%= field.name %>" required>
+                    <% field.options.forEach(option => { %>
+                        <% if (field.value == option.id_kategori ) { %>
+                            <option value="<%= option.id_kategori %>" selected><%= option.nama_kategori %></option>
+                        <% } else { %>
+                            <option value="<%= option.id_kategori %>"><%= option.nama_kategori %></option>
+                        <% } %>
+                    
+                    <% }) %>
+                </select>
+            <% } else { %>
+                <input type="<%= field.type || 'text' %>" name="<%= field.name %>" placeholder="<%= field.placeholder %>" value="<%= field.value %>" required />
+            <% } %>
+            </div>
+        <% }) %>
+      </form>
+
+      <% if (mode === 'edit') { %>
+        <form id="deleteForm" action="<%=formDeleteAction%>" method="POST"></form>
+      <% } %>
+
+        <div class="form-buttons">
+            <button type="submit" form="saveForm" class="save-btn">Save</button>
+
+            <% if (mode === 'edit') { %>
+                <button type="submit" form="deleteForm" class="delete-btn" onclick="return confirm('Are you sure want to Delete')">Delete</button>
+            <% } %>
+        </div>
+
+    </div>
+  </div>
+  </div>
+</body>
+</html>

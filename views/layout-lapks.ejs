@@ -1,0 +1,60 @@
+<%- include("navbarowner.ejs") %>
+
+    <div class="layoutBody">
+    <div class="container">
+      <h1><%= heading %></h1>
+
+      <div class="top-bar">
+        <form action="/owner/lapkerjasama" method="GET">
+        <div class="search">
+          <label>Find</label>
+          <div class="search-box">
+            <input type="text" name="search" placeholder="Search Vendor Name ..." />
+            <span class="search-icon">&#128269;</span>
+          </div>
+        </div>
+        </form>
+
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <% columns.forEach(col => { %>
+              <th><%= col %></th>
+              <% }) %>
+            </tr>
+          </thead>
+          <tbody>
+            <% vendors.forEach(vendor => { %>
+            <tr>
+              <td><%= vendor.nama_vendor %></td>
+              <td><%= vendor.OnProcess==0?"-":vendor.OnProcess + " event"%></td>
+              <td><%= vendor.Finished==0?"-":vendor.Finished + " event"%></td>
+              <td><%= vendor.Total==0?"-":vendor.Total+ " event"%></td>
+              <td style="color: #8c5a28; font-weight: bold;"><a href="/owner/lapkerjasama/detail/<%=vendor.id_vendor%>" style="text-decoration: none; color: inherit;"> Details </td></a>
+            </tr>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+          <% if (currentPage > 1) { %>
+            <a href="?page=<%= currentPage - 1 %>">Previous</a>
+          <% } %>
+
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+          <% } %>
+
+          <% if (currentPage < totalPages) { %>
+            <a href="?page=<%= currentPage + 1 %>">Next</a>
+          <% } %>
+        </div>
+    </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,103 @@
+ <%- include("navbarass.ejs") %>
+
+ <div class="layoutAddBody">
+ <div class="form-container">
+    <div class="form-left">
+      <h1><%= heading %></h1>
+    </div>
+    <div class="form-right">
+      <form id="saveForm" action="<%= formAction %>" method="POST">
+        <% fields.forEach(field => { %>
+          <div class="form-group">
+            <label><%= field.label %></label>
+
+              <% if (field.type === 'select' && field.name === 'eventType') { %>
+                <select name="<%= field.name %>" required>
+                    <% field.options.forEach(option => { 
+                        if (field.value == option.nama_jenis ) { %>
+                            <option value="<%= option.id_jenis%>" selected ><%= option.nama_jenis %></option>
+                        <% } else { %>
+                            <option value="<%= option.id_jenis%>" ><%= option.nama_jenis %></option>
+                        <% } %>
+                    <% }) %>
+                </select>
+            <% } else if (field.type === 'select' && field.name === 'eventStatus') { %>
+                <select name="<%= field.name %>" required>
+                    <% field.options.forEach(option => { 
+                        if (field.value == option ) { %>
+                            <option value="<%= option %>" selected><%= option%></option>
+                        <% } else { %>
+                            <option value="<%= option %>"><%= option%></option>
+                        <% } %>
+                    
+                    <% }) %>
+                </select>
+            <% } else if (field.type === 'autocomplete') { %>
+                <% const listId = `list-${field.name}`; %>
+
+                <!-- Input yang diketik oleh user -->
+                <input list="<%= listId %>" id="visible-<%= field.name %>" placeholder="<%= field.placeholder %>" value="<%= field.value %>"autocomplete="off" />
+
+                <!-- Datalist dengan nama dan id sebagai atribut data -->
+                <datalist id="<%= listId %>">
+                    <% field.options.forEach(option => { %>
+                        <option data-id="<%= option.id_klien %>" value="<%= option.nama %>"></option>
+                    <% }) %>
+                </datalist>
+
+                <!-- Hidden field untuk menyimpan ID yang sebenarnya -->
+                <input type="hidden" name="<%= field.name %>" id="hidden-<%= field.name %>" />
+            <% } else { %>
+                <input type="<%= field.type || 'text' %>" name="<%= field.name %>" placeholder="<%= field.placeholder %>" value="<%= field.value %>" required />
+            <% } %>
+          </div>
+        <% }) %>
+      </form>
+
+      <% if (mode === 'edit') { %>
+        <form id="deleteForm" action="<%=formDeleteAction%>" method="POST"></form>
+      <% } %>
+
+        <div class="form-buttons">
+            <button type="submit" form="saveForm" class="save-btn">Save</button>
+
+            <% if (mode === 'edit') { %>
+                <button type="submit" form="deleteForm" class="delete-btn" onclick="return confirm('Are you sure want to Delete')">Delete</button>
+            <% } %>
+        </div>
+     
+    </div>
+  </div>
+  </div>
+</body>
+
+<script>
+  function setupAutocomplete(fieldName) {
+    const visibleInput = document.getElementById(`visible-${fieldName}`);
+    const hiddenInput = document.getElementById(`hidden-${fieldName}`);
+    const datalist = document.getElementById(`list-${fieldName}`);
+
+    visibleInput.addEventListener('input', () => {
+      const options = datalist.options;
+      const value = visibleInput.value;
+      let found = false;
+
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].value === value) {
+          hiddenInput.value = options[i].dataset.id;
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        hiddenInput.value = '';
+      }
+    });
+  }
+
+  // Jalankan untuk setiap field autocomplete yang kamu punya
+  setupAutocomplete('clientID'); // ganti 'client' sesuai field.name dari backend
+</script>
+
+</html>
